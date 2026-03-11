@@ -206,4 +206,3 @@ MIT
 Built on the work of:
 - [Figma Console MCP](https://github.com/nicholasrq/figma-console) by TJ Pitre / Southleft
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) by Anthropic
-- Thu Do's [Design System as AI Infrastructure](https://www.linkedin.com/pulse/your-design-system-isnt-style-guide-anymore-its-ai-infrastructure) for framing the paradigm shift
