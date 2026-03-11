@@ -2,6 +2,8 @@
 
 A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code) for managing design systems across **Code**, **Storybook**, and **Figma**. These skills turn your design system into AI-readable infrastructure — enabling automated audits, bidirectional sync, accessibility checks, and prototyping.
 
+📖 **Read the article:** [Your Design System Is the Moat Against Product Slop](https://www.linkedin.com/pulse/your-design-system-moat-against-product-slop-guide-makhouleen-by1qe)
+
 ## What's Included
 
 ### Skills (`.claude/commands/`)
