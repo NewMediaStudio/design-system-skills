@@ -170,3 +170,9 @@ The `/ds-sync` skill uses these for pixel-level comparison against Storybook scr
    ```
 5. Run `/ds-sync DatePicker` to verify alignment
 6. Run `/ds-report` to update the drift score
+
+---
+
+## See Also
+
+- **[DS Registry](./ds-registry.md)** — the mapping file is automatically incorporated into the unified `ds-registry.json` when you run the registry generator. If the registry exists, skills use it as a fast path instead of reading the mapping file and manifest separately.

@@ -10,8 +10,9 @@ Run a comprehensive audit comparing the Figma Design System file against the Sto
 
 - Figma Desktop Bridge plugin must be running
 - Your Figma design system file must be open
-- `.claude/ds-story-figma-map.json` — pre-built Storybook↔Figma ID mapping
-- `design-system-manifest.json` — component inventory (optional, enriches the audit)
+- `.claude/ds-registry.json` — unified component registry (optional, enables fast path)
+- `.claude/ds-story-figma-map.json` — pre-built Storybook↔Figma ID mapping (fallback)
+- `design-system-manifest.json` — component inventory (fallback, enriches the audit)
 
 ## Arguments
 
@@ -24,10 +25,16 @@ Run a comprehensive audit comparing the Figma Design System file against the Sto
 
 ## Steps
 
+### 0. Load the DS Registry (Fast Path)
+
+If `.claude/ds-registry.json` exists, load it as the primary component inventory. The registry provides section frame IDs, component Figma node IDs, Storybook story IDs, variant metadata, and token cross-references — replacing separate reads of the mapping file and manifest for step 1.
+
+If the registry does not exist, fall back to the multi-file approach in step 1.
+
 ### 1. Load the Mapping File & Manifest
 
-1. **Read `.claude/ds-story-figma-map.json`** — section frame IDs, verify screen IDs, component Figma node IDs, Storybook story IDs, and key variable IDs.
-2. **Read `design-system-manifest.json`** for argTypes, prop definitions, and variant metadata.
+1. **Read `.claude/ds-story-figma-map.json`** — section frame IDs, verify screen IDs, component Figma node IDs, Storybook story IDs, and key variable IDs. (Skip if registry loaded)
+2. **Read `design-system-manifest.json`** for argTypes, prop definitions, and variant metadata. (Skip if registry loaded)
 
 ### 2. Query Figma Inventory
 

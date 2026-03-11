@@ -9,8 +9,9 @@ Audit design system components for WCAG 2.1 Level AA compliance. Checks semantic
 ## Prerequisites
 
 - Storybook dev server running on `http://localhost:6006` (launch with `/storybook` if not running)
-- `design-system-manifest.json` in project root (component inventory)
-- `.claude/ds-story-figma-map.json` — for Storybook story IDs and source file paths
+- `.claude/ds-registry.json` — unified component registry (optional, enables fast path)
+- `design-system-manifest.json` in project root (component inventory, fallback)
+- `.claude/ds-story-figma-map.json` — for Storybook story IDs and source file paths (fallback)
 - `.claude/rules/accessibility.md` — the full WCAG 2.1 AA criteria checklist
 
 ## Arguments
@@ -24,11 +25,17 @@ Audit design system components for WCAG 2.1 Level AA compliance. Checks semantic
 
 ## Phase 1: Setup
 
+### 1.0 Load the DS Registry (Fast Path)
+
+If `.claude/ds-registry.json` exists, load it as the primary component inventory. The registry provides component names, source file paths, variants, props, tokens, and story IDs — replacing separate reads of the manifest and mapping file for phases 1.1–1.2.
+
+If the registry does not exist, fall back to the multi-file approach in 1.1.
+
 ### 1.1 Load Rules & Component Inventory
 
 1. **Read `.claude/rules/accessibility.md`** — the full WCAG 2.1 AA criteria checklist
-2. **Read `design-system-manifest.json`** — component inventory with props and argTypes
-3. **Read `.claude/ds-story-figma-map.json`** — for Storybook story IDs and source file paths
+2. **Read `design-system-manifest.json`** — component inventory with props and argTypes (skip if registry loaded)
+3. **Read `.claude/ds-story-figma-map.json`** — for Storybook story IDs and source file paths (skip if registry loaded)
 
 ### 1.2 Filter Components
 
