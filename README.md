@@ -29,6 +29,7 @@ A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/d
 |-------|-------------|
 | **[Getting Started](guides/getting-started.md)** | End-to-end setup: Figma MCP, Storybook, mapping file, and your first sync |
 | **[Mapping File](guides/mapping-file.md)** | How to create and maintain the Storybook-to-Figma mapping JSON |
+| **[Code Connect](guides/code-connect.md)** | Optional: link production components to Figma Dev Mode and the MCP server via Figma Code Connect |
 
 ### Templates
 
@@ -109,6 +110,8 @@ Code (component library)  →  Storybook (rendered truth)  →  Figma (design mi
 - Read and write to Figma files via the Desktop Bridge
 - Compare all three and report discrepancies
 
+**Optional: [Figma Code Connect](guides/code-connect.md)** publishes your real component API to Figma's Dev Mode and the MCP server. When connected, AI agents get your actual prop names, variant mappings, and import paths instead of guessing. Every skill degrades gracefully without it, but accuracy improves across the board when it's there.
+
 ### The Mapping File
 
 The key artifact is `.claude/ds-story-figma-map.json` — a machine-readable contract connecting every Storybook story to its corresponding Figma node. See the [Mapping File Guide](guides/mapping-file.md) for how to create one.
@@ -176,6 +179,7 @@ Default is `localhost:6006`. If your Storybook runs on a different port, update 
 | [Figma Console MCP](https://github.com/nicholasrq/figma-console) | Figma sync, audit, report | See [Getting Started](guides/getting-started.md) |
 | [Figma Desktop](https://www.figma.com/downloads/) | Figma skills | Download from Figma |
 | [Storybook](https://storybook.js.org/) | All skills | Part of your project |
+| [Figma Code Connect](https://github.com/figma/code-connect) | Optional: richer MCP context | `npm install --save-dev @figma/code-connect` |
 
 ---
 

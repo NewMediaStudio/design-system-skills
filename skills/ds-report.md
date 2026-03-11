@@ -117,6 +117,10 @@ Also read the code-side token files and count CSS custom properties.
 
 Compare code-side icon exports against Figma icon components.
 
+### 1.6 Code Connect Inventory (Optional)
+
+If [Figma Code Connect](https://github.com/figma/code-connect) is set up, glob for `.figma.tsx` files in the component source directories. For each file found, record the component name and the Figma node URL it maps to. This adds a fourth parity dimension: whether the component has a published Code Connect mapping in addition to code, story, and Figma presence.
+
 ---
 
 ## Phase 2: Cross-Reference & Diff

@@ -89,7 +89,11 @@ git branch --show-current
 
 1. **Read `.claude/rules/accessibility.md`** — WCAG 2.1 AA criteria (the authoritative checklist for Phase 5)
 
-### 1.6 Ensure Storybook
+### 1.6 Load Code Connect Context (Optional)
+
+If [Figma Code Connect](https://github.com/figma/code-connect) is set up, check for `.figma.tsx` files alongside component source files. These contain published prop mappings, variant enums, and working code examples. When available, use them as the authoritative component API reference during composition — they're more precise than inferring props from source code alone.
+
+### 1.7 Ensure Storybook
 
 Verify Storybook is running. If not, start it with `preview_start`.
 

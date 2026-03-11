@@ -324,9 +324,22 @@ This renders the Button in Storybook, compares it to the Figma component, and wr
 
 ---
 
+## Optional: Set Up Figma Code Connect
+
+[Figma Code Connect](code-connect.md) publishes your real component API (props, variants, import paths) to Figma's Dev Mode and the MCP server. This improves every skill that touches Figma by giving AI agents your actual component contracts instead of forcing them to infer.
+
+Two options:
+- **Code Connect CLI** — write `.figma.tsx` files alongside your components, publish from terminal
+- **Code Connect UI** — map components visually inside Figma's browser, connect to a GitHub repo
+
+See the full [Code Connect Guide](code-connect.md) for setup instructions. Entirely optional. All skills work without it.
+
+---
+
 ## Next Steps
 
 - **Read the [Mapping File Guide](mapping-file.md)** for detailed mapping strategies
+- **Set up [Code Connect](code-connect.md)** for richer AI context from Figma
 - **Customise the [accessibility rules](../rules/accessibility.md)** for your project's standards
 - **Try `/ds-proto`** to prototype new features using your existing component library
 - **Set up a CI step** to run `/ds-report` on PRs and track drift over time

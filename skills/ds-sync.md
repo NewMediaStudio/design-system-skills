@@ -14,6 +14,7 @@ Synchronise your live Storybook component library with a Figma Design System fil
 - `design-system-manifest.json` in project root (component inventory)
 - `.claude/ds-story-figma-map.json` — pre-built Storybook↔Figma ID mapping (component IDs, story IDs, verify screen IDs, section frame IDs, key variable IDs)
 - `.claude/rules/accessibility.md` — WCAG 2.1 Level AA criteria (auto-loaded by Phase 4.5)
+- *(Optional)* [Figma Code Connect](https://github.com/figma/code-connect) — if published, provides real prop mappings for more accurate variant-level comparison
 
 ## Arguments
 
@@ -285,6 +286,8 @@ For each variant:
 2. Map classes to CSS tokens (e.g., `bg-surface-background` → `--surface-background`)
 3. Read the Figma variant's fills/strokes/text bindings
 4. Compare every binding
+
+**If Code Connect is published:** Also verify that Figma's variant property names and values match the Code Connect prop mappings. For example, if Code Connect maps `figma.enum("Type", { Primary: "primary" })`, verify that the Figma component set actually has a variant property named "Type" with a value "Primary", and that it corresponds to the `variant="primary"` prop in code. Flag any mismatches as `PROP_MAPPING_DRIFT`.
 
 ### 6.3 Per-Variant Visual Comparison
 
