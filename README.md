@@ -197,6 +197,10 @@ MIT
 
 ---
 
+## Author
+
+**Valentine Makhouleen** — [New Media Studio](https://github.com/NewMediaStudio)
+
 ## Credits
 
 Built on the work of:
