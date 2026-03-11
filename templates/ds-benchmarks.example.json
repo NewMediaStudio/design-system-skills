@@ -1,0 +1,35 @@
+{
+  "benchmarks": [
+    {
+      "date": "2026-01-01T12:00:00Z",
+      "branch": "main",
+      "drift": {
+        "overall": 0,
+        "components": 0,
+        "tokens": 0,
+        "icons": 0
+      },
+      "totals": {
+        "codeComponents": 0,
+        "stories": 0,
+        "figmaComponents": 0,
+        "figmaFramePlaceholders": 0,
+        "storyVariants": 0,
+        "figmaVariants": 0,
+        "primitiveTokensCode": 0,
+        "primitiveTokensFigma": 0,
+        "semanticTokensCode": 0,
+        "semanticTokensFigma": 0,
+        "cssCustomProperties": 0,
+        "remixIconsCode": 0,
+        "remixIconsFigma": 0,
+        "customIconsCode": 0,
+        "customIconsFigma": 0,
+        "documented": 0,
+        "fullParity": 0,
+        "partial": 0,
+        "outliers": 0
+      }
+    }
+  ]
+}

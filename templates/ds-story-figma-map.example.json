@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "description": "Storybook story IDs ↔ Figma node IDs mapping for ds-sync. Copy this to .claude/ds-story-figma-map.json and fill in your IDs.",
+    "generated": "2026-01-01",
+    "figmaFile": "YOUR_FIGMA_FILE_KEY",
+    "storybookBase": "http://localhost:6006/iframe.html?id={storyId}&viewMode=story&globals=theme:{theme}",
+    "semanticCollection": "VariableCollectionId:XXXX:YYYY",
+    "lightMode": "XXXX:0",
+    "darkMode": "XXXX:1"
+  },
+  "sections": {
+    "Actions": {
+      "sectionFrameId": "FIGMA_SECTION_FRAME_ID",
+      "verifyLight": "FIGMA_VERIFY_LIGHT_FRAME_ID",
+      "verifyDark": "FIGMA_VERIFY_DARK_FRAME_ID",
+      "components": {
+        "Button": {
+          "figmaId": "FIGMA_COMPONENT_SET_ID",
+          "figmaType": "COMPONENT_SET",
+          "variantCount": 12,
+          "stories": [
+            "components-actions-button--primary",
+            "components-actions-button--secondary",
+            "components-actions-button--loading",
+            "components-actions-button--disabled"
+          ],
+          "sourceFile": "src/components/button/button.tsx"
+        },
+        "IconButton": {
+          "figmaId": "FIGMA_COMPONENT_SET_ID",
+          "figmaType": "COMPONENT_SET",
+          "variantCount": 5,
+          "stories": [
+            "components-actions-iconbutton--default",
+            "components-actions-iconbutton--disabled"
+          ],
+          "sourceFile": "src/components/icon-button/icon-button.tsx"
+        }
+      }
+    },
+    "Forms": {
+      "sectionFrameId": "FIGMA_SECTION_FRAME_ID",
+      "components": {
+        "Input": {
+          "figmaId": "FIGMA_COMPONENT_SET_ID",
+          "figmaType": "COMPONENT_SET",
+          "variantCount": 8,
+          "stories": [
+            "components-forms-input--default",
+            "components-forms-input--with-value",
+            "components-forms-input--disabled",
+            "components-forms-input--with-error"
+          ],
+          "sourceFile": "src/components/input/input.tsx"
+        }
+      }
+    }
+  },
+  "storybookOnly": {
+    "useDebounce": {
+      "reason": "Hook — no visual Figma counterpart"
+    }
+  },
+  "figmaOnly": {
+    "ColorPalette": {
+      "figmaId": "FIGMA_NODE_ID",
+      "reason": "Documentation-only component in Figma"
+    }
+  },
+  "keyVariableIds": {
+    "primaryForeground": "VariableID:XXXX:YYYY",
+    "primaryBackground": "VariableID:XXXX:YYYY",
+    "surfaceBackground": "VariableID:XXXX:YYYY",
+    "strokeLine": "VariableID:XXXX:YYYY",
+    "button": "VariableID:XXXX:YYYY",
+    "focusRing": "VariableID:XXXX:YYYY"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx biome check --write $FILE_PATH || npx prettier --write $FILE_PATH",
+            "filePattern": "\\.(ts|tsx|js|jsx|json|css)$"
+          }
+        ]
+      }
+    ]
+  }
+}
