@@ -197,7 +197,40 @@ You can also ask Claude to help build the mapping:
 
 ---
 
-## Step 4: Create a Component Manifest (Optional)
+## Step 4: Generate the DS Registry (Recommended)
+
+The DS Registry (`.claude/ds-registry.json`) unifies all component metadata, Storybook stories, Figma mappings, and token data into a single AI-readable file. Instead of skills reading 15+ files on every run, they read one file. See the [DS Registry Guide](ds-registry.md) for full details.
+
+### Quick Setup
+
+1. Copy the generation script into your project:
+   ```bash
+   cp design-system-skills/scripts/generate-ds-registry.ts your-project/scripts/
+   ```
+
+2. Edit the constants at the top of the script to match your project paths (barrel export location, story directories, package names).
+
+3. Add npm scripts to your `package.json`:
+   ```json
+   {
+     "scripts": {
+       "ds:registry": "npx tsx scripts/generate-ds-registry.ts",
+       "prestorybook": "pnpm ds:registry",
+       "storybook": "storybook dev -p 6006"
+     }
+   }
+   ```
+
+4. Generate the registry:
+   ```bash
+   pnpm ds:registry
+   ```
+
+The `prestorybook` hook ensures the registry is regenerated every time Storybook starts, so the data is always fresh. All skills automatically detect and use the registry when it exists, falling back to individual file reads when it does not.
+
+---
+
+## Step 5: Create a Component Manifest (Optional)
 
 The `design-system-manifest.json` file provides component metadata (props, argTypes, variants) for richer audits:
 
@@ -226,7 +259,7 @@ You can generate this from Storybook's `/index.json` endpoint:
 
 ---
 
-## Step 5: Install the Skills
+## Step 6: Install the Skills
 
 Copy the skills into your project:
 
@@ -257,7 +290,7 @@ Open each skill and update the file paths to match your project:
 
 ---
 
-## Step 6: Run Your First Skill
+## Step 7: Run Your First Skill
 
 ### Accessibility Audit
 

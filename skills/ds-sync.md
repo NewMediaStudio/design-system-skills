@@ -29,6 +29,12 @@ Synchronise your live Storybook component library with a Figma Design System fil
 
 ## Phase 1: Setup & Token Map
 
+### 1.0 Load the DS Registry (Fast Path)
+
+If `.claude/ds-registry.json` exists, load it as the primary data source (single file read). The registry contains component metadata, variants, props, tokens, story mappings, and Figma node IDs — everything needed for Phases 1–3. Skip reading the barrel export, individual component source files, the manifest, and the token map separately.
+
+If the registry does not exist, fall back to the individual file reads described below.
+
 ### 1.1 Load the Mapping File & Manifest
 
 1. **Read `.claude/ds-story-figma-map.json`** first. This is the primary lookup for:

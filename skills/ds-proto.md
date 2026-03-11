@@ -63,6 +63,12 @@ git branch --show-current
 
 ## Phase 1: Setup & Context Loading
 
+### 1.0 Load the DS Registry (Fast Path)
+
+If `.claude/ds-registry.json` exists, load it as the primary discovery source (single file read). The registry contains the full component inventory (names, packages, source files, variants, props, tokens, Radix primitives), Storybook story paths, and section groupings — everything needed for Phase 1.1 and most of Phase 1.2. Skip reading the manifest, barrel export, and story-figma map separately.
+
+If the registry does not exist, fall back to the individual file reads described below.
+
 ### 1.1 Load Component Inventory
 
 1. **Read `design-system-manifest.json`** — full component inventory with props, argTypes, and variants

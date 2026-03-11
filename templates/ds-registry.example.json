@@ -1,0 +1,190 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "generatedAt": "2026-03-01T12:00:00.000Z",
+    "generatedBy": "scripts/generate-ds-registry.ts",
+    "figmaFile": "YOUR_FIGMA_FILE_KEY",
+    "tokenStats": {
+      "primitives": 48,
+      "semantic": 92
+    }
+  },
+  "components": {
+    "Button": {
+      "name": "Button",
+      "package": "@acme/ds",
+      "sourceFile": "packages/ds/src/components/button/button.tsx",
+      "section": "Actions",
+      "variants": {
+        "intent": ["primary", "secondary", "positive", "negative"],
+        "size": ["small", "medium", "large"]
+      },
+      "defaultVariants": {
+        "size": "small"
+      },
+      "props": {
+        "icon": "ReactNode",
+        "loading": "boolean",
+        "asChild": "boolean"
+      },
+      "tokens": [
+        "primary-foreground",
+        "surface-background",
+        "interactive-focus-ring",
+        "blue-bay"
+      ],
+      "radixPrimitives": ["slot"],
+      "stories": {
+        "file": "packages/ds/stories/button.stories.tsx",
+        "path": "Components/Actions/Button",
+        "variants": ["Primary", "Secondary", "Loading", "Disabled", "WithIcon"],
+        "argTypes": {
+          "intent": {
+            "options": ["primary", "secondary", "positive", "negative"]
+          },
+          "size": { "options": ["small", "medium", "large"] }
+        }
+      },
+      "figma": {
+        "nodeId": "5321:90928",
+        "type": "COMPONENT_SET",
+        "variantCount": 48,
+        "sectionFrameId": "5321:90953"
+      }
+    },
+    "Badge": {
+      "name": "Badge",
+      "package": "@acme/ds",
+      "sourceFile": "packages/ds/src/components/badge/badge.tsx",
+      "section": "Data Display",
+      "variants": {
+        "intent": ["neutral", "info", "positive", "warning", "negative"],
+        "size": ["small", "medium"]
+      },
+      "defaultVariants": {
+        "intent": "neutral",
+        "size": "small"
+      },
+      "tokens": [
+        "neutral-foreground",
+        "neutral-surface",
+        "positive-foreground",
+        "positive-surface",
+        "negative-foreground",
+        "negative-surface"
+      ],
+      "stories": {
+        "file": "packages/ds/stories/badge.stories.tsx",
+        "path": "Components/Data Display/Badge",
+        "variants": ["Default", "Info", "Positive", "Warning", "Negative"]
+      },
+      "figma": {
+        "nodeId": "5321:91200",
+        "type": "COMPONENT_SET",
+        "variantCount": 10,
+        "sectionFrameId": "5321:91250"
+      }
+    },
+    "Input": {
+      "name": "Input",
+      "package": "@acme/ds",
+      "sourceFile": "packages/ds/src/components/input/input.tsx",
+      "section": "Forms",
+      "variants": {
+        "size": ["small", "medium", "large"]
+      },
+      "defaultVariants": {
+        "size": "medium"
+      },
+      "props": {
+        "label": "string",
+        "error": "string",
+        "description": "string",
+        "required": "boolean",
+        "disabled": "boolean"
+      },
+      "tokens": [
+        "surface-background",
+        "stroke-input",
+        "primary-foreground",
+        "placeholder-foreground",
+        "negative-foreground",
+        "interactive-focus-ring"
+      ],
+      "stories": {
+        "file": "packages/ds/stories/input.stories.tsx",
+        "path": "Components/Forms/Input",
+        "variants": [
+          "Default",
+          "WithLabel",
+          "WithError",
+          "Disabled",
+          "Required"
+        ],
+        "argTypes": {
+          "size": { "options": ["small", "medium", "large"] }
+        }
+      },
+      "figma": {
+        "nodeId": "5321:92000",
+        "type": "COMPONENT_SET",
+        "variantCount": 18,
+        "sectionFrameId": "5321:92050"
+      }
+    }
+  },
+  "tokens": {
+    "primitives": {
+      "--blue-bay": {
+        "hex": "#0066CC",
+        "figmaVarId": "VariableID:1234:100",
+        "figmaName": "blue-bay"
+      },
+      "--slate-900": {
+        "hex": "#1A1A2E",
+        "figmaVarId": "VariableID:1234:101",
+        "figmaName": "slate-900"
+      },
+      "--white": {
+        "hex": "#FFFFFF",
+        "figmaVarId": "VariableID:1234:102",
+        "figmaName": "white"
+      }
+    },
+    "semantic": {
+      "--primary-foreground": {
+        "figmaVarId": "VariableID:5678:200",
+        "figmaName": "primary-foreground",
+        "lightAlias": "slate-900",
+        "darkAlias": "white"
+      },
+      "--surface-background": {
+        "figmaVarId": "VariableID:5678:201",
+        "figmaName": "surface-background",
+        "lightAlias": "white",
+        "darkAlias": "slate-900"
+      },
+      "--stroke-input": {
+        "figmaVarId": "VariableID:5678:202",
+        "figmaName": "stroke-input"
+      },
+      "--interactive-focus-ring": {
+        "figmaVarId": "VariableID:5678:203",
+        "figmaName": "interactive-focus-ring"
+      }
+    }
+  },
+  "icons": {
+    "custom": ["LogoIcon", "SpinnerIcon"],
+    "remix": ["RiSearchLine", "RiCloseLine", "RiArrowDownSLine"]
+  },
+  "sections": ["Actions", "Data Display", "Forms"],
+  "outliers": {
+    "storybookOnly": {
+      "Prototypes": ["DashboardProto", "SettingsProto"]
+    },
+    "figmaOnly": {
+      "Divider": "Exists in Figma but not yet exported from code"
+    }
+  }
+}

@@ -49,6 +49,12 @@ This data is used in Phase 3 to compute trends and in Phase 4 to persist the new
 
 Gather data from all three sources in parallel. Do NOT modify anything — this is a read-only audit.
 
+### 1.0 Load the DS Registry (Fast Path)
+
+If `.claude/ds-registry.json` exists, load it as the primary data source (single file read). The registry provides the complete Code inventory (component names, source files, variants, props), Storybook inventory (story files, story names, argTypes), Figma mappings (node IDs, types, variant counts), token cross-references, icon inventory, and section groupings. This replaces most of the individual file reads in Phases 1.1–1.5. You still need a live Figma API call (Phase 1.3) for fresh Figma node counts.
+
+If the registry does not exist, fall back to the individual file reads described below.
+
 ### 1.1 Code Inventory (DS Barrel)
 
 Read your component library's barrel export file (e.g., `src/index.ts` or `src/main.tsx`) and extract every exported component. Normalise each path to a component name:
