@@ -14,6 +14,7 @@ A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/d
 | **[DS WCAG](skills/ds-wcag.md)** | `/ds-wcag` | WCAG 2.1 Level AA accessibility audit — source analysis, axe-core, keyboard testing, contrast checks in light + dark |
 | **[DS Report](skills/ds-report.md)** | `/ds-report` | Cross-reference Code, Storybook, and Figma to produce a parity report with drift scores and historical benchmarks |
 | **[DS Proto](skills/ds-proto.md)** | `/ds-proto` | Prototype layouts using your existing design system components with accessibility guardrails |
+| **[DS Spec](skills/ds-spec.md)** | `/ds-spec` | Generate structured component specs — anatomy, API, tokens, structure, and accessibility in a single pass |
 | **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Lightweight Figma-to-Storybook visual parity spot-check |
 | **[Storybook](skills/storybook.md)** | `/storybook` | Launch your Storybook dev server |
 
@@ -92,6 +93,12 @@ See the **[Getting Started Guide](guides/getting-started.md)** for full setup in
 
 # Prototype a new feature
 /ds-proto "dashboard with metric cards and filters"
+
+# Generate a structured spec for a component
+/ds-spec Button
+
+# Generate specs with Figma write-back
+/ds-spec --figma Button
 ```
 
 ---
@@ -111,6 +118,7 @@ Code (component library)  →  Storybook (rendered truth)  →  Figma (design mi
 - Render and inspect Storybook stories
 - Read and write to Figma files via the Desktop Bridge
 - Compare all three and report discrepancies
+- Generate structured specs (anatomy, API, tokens, accessibility) and write them back into Figma
 
 **Optional: [Figma Code Connect](guides/code-connect.md)** publishes your real component API to Figma's Dev Mode and the MCP server. When connected, AI agents get your actual prop names, variant mappings, and import paths instead of guessing. Every skill degrades gracefully without it, but accuracy improves across the board when it's there.
 
@@ -183,7 +191,7 @@ Default is `localhost:6006`. If your Storybook runs on a different port, update 
 | Tool | Required For | Installation |
 |------|-------------|-------------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | All skills | `npm install -g @anthropic-ai/claude-code` |
-| [Figma Console MCP](https://github.com/nicholasrq/figma-console) | Figma sync, audit, report | See [Getting Started](guides/getting-started.md) |
+| [Figma Console MCP](https://github.com/nicholasrq/figma-console) | Figma sync, audit, report, spec `--figma` | See [Getting Started](guides/getting-started.md) |
 | [Figma Desktop](https://www.figma.com/downloads/) | Figma skills | Download from Figma |
 | [Storybook](https://storybook.js.org/) | All skills | Part of your project |
 | [Figma Code Connect](https://github.com/figma/code-connect) | Optional: richer MCP context | `npm install --save-dev @figma/code-connect` |
