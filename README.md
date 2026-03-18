@@ -8,40 +8,40 @@ A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/d
 
 ### Skills (`.claude/commands/`)
 
-| Skill | Command | Description |
-|-------|---------|-------------|
-| **[DS Sync](skills/ds-sync.md)** | `/ds-sync` | Sync Storybook components to Figma — renders each component, compares it to its Figma counterpart, and writes adjustments back using only bound variables |
-| **[DS WCAG](skills/ds-wcag.md)** | `/ds-wcag` | WCAG 2.1 Level AA accessibility audit — source analysis, axe-core, keyboard testing, contrast checks in light + dark |
-| **[DS Report](skills/ds-report.md)** | `/ds-report` | Cross-reference Code, Storybook, and Figma to produce a parity report with drift scores and historical benchmarks |
-| **[DS Proto](skills/ds-proto.md)** | `/ds-proto` | Prototype layouts using your existing design system components with accessibility guardrails |
-| **[DS Spec](skills/ds-spec.md)** | `/ds-spec` | Generate structured component specs — anatomy, API, tokens, structure, and accessibility in a single pass |
-| **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Lightweight Figma-to-Storybook visual parity spot-check |
-| **[Storybook](skills/storybook.md)** | `/storybook` | Launch your Storybook dev server |
+| Skill                                          | Command           | Description                                                                                                                                               |
+| ---------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[DS Sync](skills/ds-sync.md)**               | `/ds-sync`        | Sync Storybook components to Figma — renders each component, compares it to its Figma counterpart, and writes adjustments back using only bound variables |
+| **[DS WCAG](skills/ds-wcag.md)**               | `/ds-wcag`        | WCAG 2.1 Level AA accessibility audit — source analysis, axe-core, keyboard testing, contrast checks in light + dark                                      |
+| **[DS Report](skills/ds-report.md)**           | `/ds-report`      | Cross-reference Code, Storybook, and Figma to produce a parity report with drift scores and historical benchmarks                                         |
+| **[DS Proto](skills/ds-proto.md)**             | `/ds-proto`       | Prototype layouts using your existing design system components with accessibility guardrails                                                              |
+| **[DS Spec](skills/ds-spec.md)**               | `/ds-spec`        | Generate structured component specs — anatomy, API, tokens, structure, and accessibility in a single pass                                                 |
+| **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Lightweight Figma-to-Storybook visual parity spot-check                                                                                                   |
+| **[Storybook](skills/storybook.md)**           | `/storybook`      | Launch your Storybook dev server                                                                                                                          |
 
 ### Rules (`.claude/rules/`)
 
-| File | Description |
-|------|-------------|
+| File                                           | Description                                                                                                             |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | **[accessibility.md](rules/accessibility.md)** | Comprehensive WCAG 2.1 Level AA criteria — semantic HTML, ARIA, keyboard, contrast, touch targets, component checklists |
 
 ### Guides
 
-| Guide | Description |
-|-------|-------------|
-| **[Getting Started](guides/getting-started.md)** | End-to-end setup: Figma MCP, Storybook, mapping file, and your first sync |
-| **[DS Registry](guides/ds-registry.md)** | Unified JSON registry — one file for all component, story, Figma, and token metadata |
-| **[Mapping File](guides/mapping-file.md)** | How to create and maintain the Storybook-to-Figma mapping JSON |
-| **[Code Connect](guides/code-connect.md)** | Optional: link production components to Figma Dev Mode and the MCP server via Figma Code Connect |
+| Guide                                            | Description                                                                                      |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| **[Getting Started](guides/getting-started.md)** | End-to-end setup: Figma MCP, Storybook, mapping file, and your first sync                        |
+| **[DS Registry](guides/ds-registry.md)**         | Unified JSON registry — one file for all component, story, Figma, and token metadata             |
+| **[Mapping File](guides/mapping-file.md)**       | How to create and maintain the Storybook-to-Figma mapping JSON                                   |
+| **[Code Connect](guides/code-connect.md)**       | Optional: link production components to Figma Dev Mode and the MCP server via Figma Code Connect |
 
 ### Templates
 
-| Template | Description |
-|----------|-------------|
-| **[ds-registry.json](templates/ds-registry.example.json)** | Example DS Registry with component, story, Figma, and token metadata |
-| **[ds-story-figma-map.json](templates/ds-story-figma-map.example.json)** | Example mapping file connecting Storybook stories to Figma node IDs |
-| **[ds-benchmarks.json](templates/ds-benchmarks.example.json)** | Example benchmark file for tracking drift over time |
-| **[launch.json](templates/launch.example.json)** | Example Claude Code server launch config for Storybook |
-| **[settings.json](templates/settings.example.json)** | Example Claude Code settings with auto-formatting hooks |
+| Template                                                                 | Description                                                          |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| **[ds-registry.json](templates/ds-registry.example.json)**               | Example DS Registry with component, story, Figma, and token metadata |
+| **[ds-story-figma-map.json](templates/ds-story-figma-map.example.json)** | Example mapping file connecting Storybook stories to Figma node IDs  |
+| **[ds-benchmarks.json](templates/ds-benchmarks.example.json)**           | Example benchmark file for tracking drift over time                  |
+| **[launch.json](templates/launch.example.json)**                         | Example Claude Code server launch config for Storybook               |
+| **[settings.json](templates/settings.example.json)**                     | Example Claude Code settings with auto-formatting hooks              |
 
 ---
 
@@ -114,6 +114,7 @@ Code (component library)  →  Storybook (rendered truth)  →  Figma (design mi
 **Code is canonical.** Components are built in your codebase (React, Vue, Svelte — whatever your stack). Storybook documents their states and variants. Figma mirrors the components using bound variables (design tokens), not hardcoded values.
 
 **Claude Code bridges all three.** Using MCP (Model Context Protocol) servers, Claude can:
+
 - Read your component source code
 - Render and inspect Storybook stories
 - Read and write to Figma files via the Desktop Bridge
@@ -153,15 +154,15 @@ These skills are designed to be adapted to your project. Common customisations:
 
 Update these paths in the skills to match your project structure:
 
-| Default | What It Is | Where to Change |
-|---------|-----------|-----------------|
-| `packages/ds/src/main.tsx` | DS barrel export | `ds-report.md`, `ds-proto.md` |
-| `packages/ds/stories/` | Story file location | `ds-report.md`, `ds-wcag.md` |
-| `packages/ds/src/styles/` | Token/CSS files | `ds-sync.md`, `ds-proto.md` |
-| `apps/*/src/` | Application code | `ds-sync.md`, `ds-proto.md` |
-| `design-system-manifest.json` | Component inventory | All skills |
-| `.claude/ds-story-figma-map.json` | Figma mapping | All skills |
-| `.claude/ds-registry.json` | Unified DS registry (generated) | All skills (optional fast path) |
+| Default                           | What It Is                      | Where to Change                 |
+| --------------------------------- | ------------------------------- | ------------------------------- |
+| `packages/ds/src/main.tsx`        | DS barrel export                | `ds-report.md`, `ds-proto.md`   |
+| `packages/ds/stories/`            | Story file location             | `ds-report.md`, `ds-wcag.md`    |
+| `packages/ds/src/styles/`         | Token/CSS files                 | `ds-sync.md`, `ds-proto.md`     |
+| `apps/*/src/`                     | Application code                | `ds-sync.md`, `ds-proto.md`     |
+| `design-system-manifest.json`     | Component inventory             | All skills                      |
+| `.claude/ds-story-figma-map.json` | Figma mapping                   | All skills                      |
+| `.claude/ds-registry.json`        | Unified DS registry (generated) | All skills (optional fast path) |
 
 ### Token Architecture
 
@@ -188,13 +189,13 @@ Default is `localhost:6006`. If your Storybook runs on a different port, update 
 
 ## Prerequisites
 
-| Tool | Required For | Installation |
-|------|-------------|-------------|
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | All skills | `npm install -g @anthropic-ai/claude-code` |
+| Tool                                                             | Required For                              | Installation                                     |
+| ---------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------ |
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code)    | All skills                                | `npm install -g @anthropic-ai/claude-code`       |
 | [Figma Console MCP](https://github.com/nicholasrq/figma-console) | Figma sync, audit, report, spec `--figma` | See [Getting Started](guides/getting-started.md) |
-| [Figma Desktop](https://www.figma.com/downloads/) | Figma skills | Download from Figma |
-| [Storybook](https://storybook.js.org/) | All skills | Part of your project |
-| [Figma Code Connect](https://github.com/figma/code-connect) | Optional: richer MCP context | `npm install --save-dev @figma/code-connect` |
+| [Figma Desktop](https://www.figma.com/downloads/)                | Figma skills                              | Download from Figma                              |
+| [Storybook](https://storybook.js.org/)                           | All skills                                | Part of your project                             |
+| [Figma Code Connect](https://github.com/figma/code-connect)      | Optional: richer MCP context              | `npm install --save-dev @figma/code-connect`     |
 
 ---
 
@@ -220,10 +221,11 @@ MIT
 
 ## Author
 
-**Valentine Makhouleen** — [New Media Studio](https://github.com/NewMediaStudio)
+Designed by [Valentine Makhouleen] (https://www.linkedin.com/in/newmediadesign/)
 
 ## Credits
 
 Built on the work of:
+
 - [Figma Console MCP](https://github.com/nicholasrq/figma-console) by TJ Pitre / Southleft
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) by Anthropic
