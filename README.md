@@ -221,7 +221,7 @@ MIT
 
 ## Author
 
-Designed by [Valentine Makhouleen] (https://www.linkedin.com/in/newmediadesign/)
+Designed by [Valentine Makhouleen](https://www.linkedin.com/in/newmediadesign/)
 
 ## Credits
 
