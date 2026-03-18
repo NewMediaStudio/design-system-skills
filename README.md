@@ -229,3 +229,4 @@ Built on the work of:
 
 - [Figma Console MCP](https://github.com/nicholasrq/figma-console) by TJ Pitre / Southleft
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) by Anthropic
+- [Stop Slop](https://github.com/hardikpandya/stop-slop) by Hardik Pandya — skill for voice, tone, and product copy that strips AI tells from prose
