@@ -1,8 +1,6 @@
 # The Mapping File
 
-The mapping file (`.claude/ds-story-figma-map.json`) is the single most important artifact in this workflow. It's a machine-readable contract that connects every Storybook story to its corresponding Figma node.
-
-Without it, Claude has to guess which Figma component matches which story. With it, every comparison is precise and every sync writes to the right place.
+`.claude/ds-story-figma-map.json` connects every Storybook story to its corresponding Figma node. Every comparison and every sync write targets the exact right place because of this file.
 
 ---
 
@@ -133,7 +131,7 @@ You can ask Claude to help build the mapping:
 
 ### Staleness Detection
 
-The `/ds-sync` skill checks the mapping file at startup. If a Figma ID returns a null node, it logs a warning. If multiple IDs are stale, it suggests regenerating the mapping.
+The `/ds-sync` skill checks the mapping at startup. Null Figma node IDs get flagged as warnings. Multiple stale IDs trigger a prompt to regenerate the mapping.
 
 ### Verify Screens (Optional)
 

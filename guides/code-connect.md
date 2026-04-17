@@ -1,22 +1,16 @@
 # Figma Code Connect (Optional)
 
-[Figma Code Connect](https://developers.figma.com/docs/code-connect/) links your production components directly to Figma's Dev Mode and the Figma MCP server. When a developer inspects a component in Figma, they see your actual component API instead of auto-generated guesses. When an AI agent reads your Figma file through MCP, it gets real prop mappings instead of inventing its own.
+[Figma Code Connect](https://developers.figma.com/docs/code-connect/) links your production components to Figma's Dev Mode and the MCP server. Developers inspecting a component in Figma see your real API. Claude gets your actual prop names, variant mappings, and import paths instead of inferring them from node names.
 
-This is optional. The skills in this repo work without Code Connect. But if you set it up, every skill that touches Figma gets more accurate.
+Optional. All skills work without it and improve with it.
 
 ---
 
 ## What Code Connect Does
 
-Without Code Connect, the Figma MCP server sees a component named "Button" and has to infer what props it takes. It might guess wrong. It might invent props that don't exist. It doesn't know your API.
+The Figma MCP server sees a component named "Button" and infers what props it takes from node names. That inference is often wrong. Code Connect replaces the inference with your actual API: the import path, prop names and types, value mappings (Figma's `Type = Primary` maps to `variant="primary"`), and a working code example.
 
-With Code Connect, the MCP server receives:
-- The real import path (`import { Button } from "@acme/ds"`)
-- The real prop names and types (`variant`, `size`, `disabled`)
-- The real value mappings (Figma's `Type = Primary` maps to `variant="primary"`)
-- A working code example
-
-This means `/ds-sync` compares against real prop mappings, `/ds-proto` composes with your actual API, and `/ds-report` can verify that Figma variant properties match code props.
+`/ds-sync` compares against real prop mappings. `/ds-proto` composes with your actual API. `/ds-report` can verify Figma variant properties against code props.
 
 ---
 
@@ -210,7 +204,7 @@ jobs:
 | `/ds-report` | Counts components and variants | Can cross-reference Code Connect publication status as a fourth parity dimension |
 | `/ds-audit-figma` | Visual spot-check | Can verify Code Connect coverage alongside visual parity |
 
-The skills degrade gracefully. Everything works without Code Connect. It just works better with it.
+All skills work without Code Connect. Accuracy improves when it's present.
 
 ---
 

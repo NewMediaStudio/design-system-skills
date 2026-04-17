@@ -1,6 +1,6 @@
 # DS Registry
 
-The DS Registry is a single JSON file (`.claude/ds-registry.json`) that unifies component metadata, Storybook stories, Figma mappings, and token data into one AI-readable source of truth.
+The DS Registry is a single JSON file (`.claude/ds-registry.json`) that combines component metadata, Storybook stories, Figma mappings, and token data into one file every skill can read.
 
 **Time estimate:** 15 minutes to set up generation, then fully automatic.
 
@@ -8,7 +8,7 @@ The DS Registry is a single JSON file (`.claude/ds-registry.json`) that unifies 
 
 ## Why a Registry?
 
-Without a registry, each skill (`/ds-sync`, `/ds-report`, `/ds-proto`) independently reads multiple files to build context:
+Each skill (`/ds-sync`, `/ds-report`, `/ds-proto`) reads multiple files to build context:
 
 1. **Barrel export** (`src/main.tsx`) to discover components
 2. **Each component source file** to extract CVA variants, props, tokens, Radix primitives
@@ -19,7 +19,7 @@ Without a registry, each skill (`/ds-sync`, `/ds-report`, `/ds-proto`) independe
 
 For a design system with 50+ components, this means **~85 file operations** per skill invocation — barrel reads, source file reads, story file globs and reads, JSON loads. Each of these is a tool call with latency overhead.
 
-The registry collapses all of this into **one file read** (~3,100 lines for a typical DS). Every skill gets the full picture from a single `Read` operation.
+The registry collapses all of that into **one file read**: ~3,100 lines for a typical DS, loaded in a single `Read` operation.
 
 ### Before vs After
 
@@ -271,13 +271,13 @@ The generation script reads these source files and merges them:
 | **Token map** (`.claude/ds-token-map.json`) | Primitive and semantic token cross-references |
 | **Manifest** (`design-system-manifest.json`) | Icon inventory |
 
-All of these except the barrel export and component sources are optional. The script degrades gracefully — if a file is missing, that section is omitted from the registry.
+All sources except the barrel export and component files are optional. If a file is missing, the script omits that section from the registry.
 
 ---
 
 ## Keeping the Registry in Sync
 
-The registry is a **generated artifact**, not a hand-edited file. To keep it accurate:
+The registry is a **generated artifact**. To keep it accurate:
 
 1. **Regenerate after adding/removing components** — run `pnpm ds:registry`
 2. **Regenerate after modifying CVA variants** — variant changes in source files are only picked up on regeneration

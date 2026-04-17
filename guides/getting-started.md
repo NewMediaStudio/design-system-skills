@@ -1,14 +1,14 @@
 # Getting Started
 
-This guide walks you through setting up Claude Code skills for design system workflows — from zero to your first Storybook-to-Figma sync.
+Set up Claude Code skills for design system workflows. By the end you'll have a running Storybook-to-Figma sync.
 
-**Time estimate:** 1–2 hours (mostly Figma MCP setup and creating your mapping file)
+**Time estimate:** 1–2 hours (mostly Figma MCP setup and mapping file creation)
 
 ---
 
 ## Prerequisites
 
-Before you begin, you need:
+You need:
 
 - **A component library** with [Storybook](https://storybook.js.org/) stories
 - **A Figma file** that mirrors your components (or one you want to build)
@@ -20,7 +20,7 @@ Before you begin, you need:
 
 ## Step 1: Set Up Figma Console MCP
 
-The Figma Console MCP server gives Claude deep access to your Figma file — reading nodes, variables, styles, and writing changes back.
+The Figma Console MCP server gives Claude access to your Figma file: reading nodes, variables, and styles, and writing changes back.
 
 ### 1.1 Install the MCP Server
 
@@ -294,23 +294,15 @@ Open each skill and update the file paths to match your project:
 
 ### Accessibility Audit
 
-The easiest way to see value immediately:
-
 ```bash
 # Start Claude Code in your project
 claude
 
-# Run the accessibility audit on a single component
+# Audit a single component
 /ds-wcag Button
 ```
 
-This will:
-1. Read your Button component source code
-2. Render it in Storybook
-3. Run axe-core against the rendered output
-4. Test keyboard navigation
-5. Check contrast ratios in light and dark modes
-6. Produce a scored report (0–20 scale)
+Claude reads the Button source, renders it in Storybook, runs axe-core, tests keyboard navigation, checks contrast in both themes, and scores the result on a 0–20 scale.
 
 ### Parity Report
 
@@ -359,7 +351,7 @@ This renders the Button in Storybook, compares it to the Figma component, and wr
 
 ## Optional: Set Up Figma Code Connect
 
-[Figma Code Connect](code-connect.md) publishes your real component API (props, variants, import paths) to Figma's Dev Mode and the MCP server. This improves every skill that touches Figma by giving AI agents your actual component contracts instead of forcing them to infer.
+[Figma Code Connect](code-connect.md) publishes your real component API (props, variants, import paths) to Figma's Dev Mode and the MCP server. Every Figma skill gets more accurate because Claude reads your actual component contracts instead of inferring them.
 
 Two options:
 - **Code Connect CLI** — write `.figma.tsx` files alongside your components, publish from terminal
@@ -375,4 +367,4 @@ See the full [Code Connect Guide](code-connect.md) for setup instructions. Entir
 - **Set up [Code Connect](code-connect.md)** for richer AI context from Figma
 - **Customise the [accessibility rules](../rules/accessibility.md)** for your project's standards
 - **Try `/ds-proto`** to prototype new features using your existing component library
-- **Set up a CI step** to run `/ds-report` on PRs and track drift over time
+- **Set up CI gates** to run `/ds-report` on PRs and track drift over time (see [CI Integration](../guides/ci-integration.md))
