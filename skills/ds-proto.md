@@ -95,11 +95,23 @@ If the registry does not exist, fall back to the individual file reads described
 
 1. **Read `.claude/rules/accessibility.md`** — WCAG 2.1 AA criteria (the authoritative checklist for Phase 5)
 
-### 1.6 Load Code Connect Context (Optional)
+### 1.6 Load DESIGN.md Context (Optional)
+
+Check for `.claude/DESIGN.md` or `DESIGN.md` in the project root. If found, load it as design intent context.
+
+The file provides: visual theme and mood, semantic color palette with light/dark hex values, typography scale, spacing grid, component conventions, and design do/don'ts. Use it to:
+
+- Inform layout density and rhythm decisions in Phase 4 (match the stated visual theme)
+- Ground concept generation in Phase 2.7 (each concept should be distinct but consistent with the stated identity)
+- Catch violations in the Phase 4.6 self-critique (flag any token usage or layout choice that contradicts the guidelines)
+
+If DESIGN.md is absent, continue normally — all other context sources cover the structural side. Run `/ds-design-md` to generate one.
+
+### 1.7 Load Code Connect Context (Optional)
 
 If [Figma Code Connect](https://github.com/figma/code-connect) is set up, check for `.figma.tsx` files alongside component source files. These contain published prop mappings, variant enums, and working code examples. When available, use them as the authoritative component API reference during composition — they're more precise than inferring props from source code alone.
 
-### 1.7 Ensure Storybook
+### 1.8 Ensure Storybook
 
 Verify Storybook is running. If not, start it with `preview_start`.
 

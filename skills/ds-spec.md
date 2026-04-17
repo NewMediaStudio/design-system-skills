@@ -67,15 +67,26 @@ Flags can be combined: `/ds-spec --json --render --figma Button`
 3. **Read your token/CSS source files** — semantic token definitions for both themes
 4. **If `--figma` flag:** verify Figma Console MCP is connected by listing available tools. If not connected, warn and fall back to markdown-only output.
 
-### 0.3 Load Code Connect Mappings (Optional)
+### 0.3 Load DESIGN.md Context (Optional)
+
+Check for `.claude/DESIGN.md` or `DESIGN.md` in the project root. If found, load it.
+
+Use the DESIGN.md data to enrich two spec sections:
+
+- **§2.6 Usage Examples** — examples should reflect the visual theme and follow the stated do/don'ts (e.g., if DESIGN.md says "use realistic domain data", usage examples use product-appropriate content, not "Lorem ipsum")
+- **§2.3 Token Mapping** — the Agent Prompt Guide section of DESIGN.md lists the authoritative token naming convention; use it to verify token names in the spec match what the file declares
+
+If DESIGN.md is absent, continue normally. Run `/ds-design-md` to generate one.
+
+### 0.4 Load Code Connect Mappings (Optional)
 
 Glob for `.figma.tsx` files in the component source directories. For each file found, record the component name and its Figma prop mappings (e.g., `figma.enum("Type", { Primary: "primary" })`). These enrich the API section (§2.2) with real Figma ↔ code prop correspondence and flag any `PROP_MAPPING_DRIFT` when Figma variant properties don't match the code.
 
-### 0.4 Filter Components
+### 0.5 Filter Components
 
 If `$ARGUMENTS` specifies a component or section name, filter the inventory (case-insensitive partial match on component name, section name, or Storybook path). Otherwise process all components.
 
-### 0.5 Ensure Storybook
+### 0.6 Ensure Storybook
 
 Verify Storybook is running. Determine the URL from one of these sources (in order):
 1. **Registry** — `_meta.storybookBase` if present

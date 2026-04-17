@@ -18,6 +18,7 @@ Open-source [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code)
 | **[DS Tokens](skills/ds-tokens.md)**           | `/ds-tokens`      | Validate CSS token parity against Figma variables — detects mismatches, missing tokens, orphaned variables, and generates `.claude/ds-token-map.json`    |
 | **[DS Usage](skills/ds-usage.md)**             | `/ds-usage`       | Scan the codebase for component adoption, shadow copies, override patterns, and unused components — outputs per-team adoption metrics                     |
 | **[DS Lifecycle](skills/ds-lifecycle.md)**     | `/ds-lifecycle`   | Track component lifecycle stages (proposed → alpha → beta → stable → deprecated → removed), enforce promotion criteria, and generate deprecation notices |
+| **[DS Design MD](skills/ds-design-md.md)**     | `/ds-design-md`   | Generate a `DESIGN.md` from your token map, Figma variables, typography, and component patterns — readable by any AI agent (Cursor, Lovable, Google Stitch) |
 | **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Figma-to-Storybook visual parity audit — per-component and per-variant screenshot diff, property extraction, drift scoring, and mapping health check     |
 | **[Storybook](skills/storybook.md)**           | `/storybook`      | Launch your Storybook dev server                                                                                                                          |
 
@@ -38,6 +39,7 @@ Open-source [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code)
 | **[CI Integration](guides/ci-integration.md)**                 | Run DS skills in CI — WCAG gates, drift thresholds, shadow copy detection, and PR comments       |
 | **[Component Versioning](guides/component-versioning.md)**     | Semantic versioning for DS components, codemods, deprecation notices, and migration guides       |
 | **[Multi-Brand](guides/multi-brand.md)**                       | Run skills across multiple brands or themes — per-brand token maps, Figma files, and CI matrix   |
+| **[DESIGN.md](guides/design-md.md)**                           | How DESIGN.md works, what it contains, and how to keep it in sync with your design system        |
 
 ### Templates
 
@@ -114,6 +116,12 @@ See the **[Getting Started Guide](guides/getting-started.md)** for full setup. T
 
 # Deprecate a component and generate migration notices
 /ds-lifecycle deprecate LegacyAlert
+
+# Generate a DESIGN.md for use in Cursor, Lovable, Google Stitch
+/ds-design-md --root
+
+# Generate with Figma typography styles and variable values
+/ds-design-md --figma --root
 
 # Full Figma-to-Storybook visual parity audit with per-variant diffs
 /ds-audit-figma --variants --themes
