@@ -243,22 +243,155 @@ After auditing all components, write `.claude/ds-wcag-report.md`:
 
 ---
 
-## Phase 4: Auto-Fix Suggestions
+## Phase 4: Auto-Fix Loop
 
-For P0 and P1 issues where the fix is clear and mechanical:
+For P0 and P1 issues where the fix is clear and mechanical, run a fix-then-verify loop until no fixable issues remain or manual intervention is required.
 
-1. Present the proposed code change
-2. Wait for user approval
-3. Apply the fix using Edit tool
-4. Re-run the axe-core check on the modified component to verify
+### 4.1 Identify Auto-Fixable Issues
+
+After Phase 3, collect all P0 and P1 issues across all components. Classify each as:
+
+- **AUTO** — can be applied mechanically with the Edit tool
+- **MANUAL** — requires design or structural judgment
 
 **Auto-fixable patterns:**
-- Missing `aria-label` on icon-only buttons → add `aria-label` prop
-- Missing `aria-invalid` on error state → add `aria-invalid={!!error}`
-- Missing `aria-describedby` for error messages → wire up `id` linkage
-- Missing `aria-required` → add `aria-required={required}`
-- Missing `role="alert"` on error containers → add the role
-- Missing `sr-only` text for icon-only actions → add `<span className="sr-only">`
+
+| Issue | Pattern | Fix |
+|-------|---------|-----|
+| Missing `aria-label` on icon-only button | `<button>` with no text, no `aria-label` | Add `aria-label` prop to component signature and usage |
+| Missing `aria-invalid` on error state | `error` prop exists but no `aria-invalid` | Add `aria-invalid={!!error}` to the input element |
+| Missing `aria-describedby` for error | Error message rendered but not linked | Add `id` to error element, add `aria-describedby={errorId}` to input |
+| Missing `aria-required` | `required` prop not forwarded to element | Add `aria-required={required}` or forward `required` attribute |
+| Missing `role="alert"` on error container | Error container has no live region | Add `role="alert"` or `aria-live="assertive"` |
+| Missing `sr-only` on icon-only action | Icon rendered with no accessible label | Add `<span className="sr-only">[label]</span>` inside the button |
+| Missing `aria-hidden` on decorative icon | Icon alongside visible text has no `aria-hidden` | Add `aria-hidden="true"` to the icon element |
+| Redundant `role` on native element | `<button role="button">` | Remove the redundant `role` attribute |
+| Missing `focus-visible` ring | Interactive element has no `focus-visible:ring-*` | Add `focus-visible:ring-2 focus-visible:ring-interactive-focus-ring focus-visible:ring-offset-2` |
+
+### 4.2 Fix → Verify Loop
+
+For each AUTO issue, in order of severity (P0 first):
+
+**Step 1 — Present the fix:**
+
+```
+Component: Input (src/components/Input.tsx:34)
+Issue: Missing aria-invalid on error state (P0)
+Proposed fix:
+  Before: <input id={id} {...props} />
+  After:  <input id={id} aria-invalid={!!error} {...props} />
+Apply? [y/n]
+```
+
+**Step 2 — Apply on approval:**
+
+Use the Edit tool to apply the change. Record the file path, line number, before, and after.
+
+**Step 3 — Re-verify:**
+
+After applying the fix, re-run the targeted axe-core check on the affected component:
+
+```js
+// preview_eval — re-run axe after fix (requires Storybook hot-reload)
+await new Promise(r => setTimeout(r, 1500)); // wait for HMR
+const results = await window.axe.run(document.querySelector('#storybook-root'));
+return results.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.length }));
+```
+
+If the violation is gone → mark the issue as **FIXED**. If the violation persists → escalate to **MANUAL**.
+
+**Step 4 — Re-score the component:**
+
+After all fixes for a component are applied, re-run the full Phase 2 audit on that component and update its score. Show before/after:
+
+```
+Button — Before: 14/20 (MINOR ISSUES) → After: 20/20 (COMPLIANT)
+Input  — Before: 11/20 (TO FIX)       → After: 17/20 (MINOR ISSUES) [1 manual issue remains]
+```
+
+### 4.3 Fix Summary
+
+After the loop completes, append a fix summary to `.claude/ds-wcag-report.md`:
+
+```markdown
+## Auto-Fix Summary
+
+| Component | Issues Fixed | Issues Remaining (Manual) | Score Before | Score After |
+|-----------|:---:|:---:|:---:|:---:|
+| Button | 3 | 0 | 14/20 | 20/20 |
+| Input | 2 | 1 | 11/20 | 17/20 |
+| Select | 0 | 4 | 8/20 | 8/20 |
+
+**Total auto-fixed:** X issues across Y components
+**Still requiring manual work:** Z issues
+
+### Remaining Manual Issues
+
+| Component | Issue | Severity | Why Manual |
+|-----------|-------|----------|------------|
+| Select | Missing keyboard type-ahead | P0 | Requires logic change |
+| Dialog | Focus restoration missing | P0 | Requires ref wiring |
+```
+
+---
+
+## Phase 5: Dual-Theme Contrast Audit
+
+A standalone pass that ensures contrast ratios pass in **both** light and dark themes for every component. Run this after Phase 2.4, or invoke independently with `--themes-only`.
+
+### 5.1 Build a Theme Color Map
+
+For each CSS token used by the components under audit, record its resolved value in both modes:
+
+```js
+// Read light and dark CSS variables from the document
+// Light: load story at &globals=theme:light, then getComputedStyle(document.documentElement)
+// Dark:  load story at &globals=theme:dark,  then getComputedStyle(document.documentElement)
+const tokens = ['--surface-background', '--primary-foreground', '--border-input', ...];
+const lightValues = tokens.map(t => ({ token: t, value: getComputedStyle(document.documentElement).getPropertyValue(t).trim() }));
+```
+
+Resolve any `var(--alias)` references until raw hex/rgb values are reached. Build:
+
+```json
+{
+  "--surface-background": { "light": "#f9fafb", "dark": "#111111" },
+  "--primary-foreground": { "light": "#1a1a1a", "dark": "#f5f5f5" }
+}
+```
+
+### 5.2 Per-Component, Per-Theme Contrast Check
+
+For each component, for each of its foreground/background token pairs, calculate contrast in both modes:
+
+```
+Pair: text (--primary-foreground) on background (--surface-background)
+  Light: #1a1a1a on #f9fafb → ratio: 17.5:1 ✅
+  Dark:  #f5f5f5 on #111111 → ratio: 14.2:1 ✅
+
+Pair: placeholder (--muted-foreground) on background (--surface-background)
+  Light: #6b7280 on #f9fafb → ratio: 4.6:1 ✅
+  Dark:  #6b7280 on #111111 → ratio: 3.1:1 ❌ FAIL (< 4.5:1 for normal text)
+```
+
+Use the WCAG 2.0 luminance formula from `.claude/rules/accessibility.md` section 4.4.
+
+### 5.3 Theme Contrast Report
+
+```markdown
+## Dual-Theme Contrast Audit
+
+| Component | Token Pair | Light Ratio | Light | Dark Ratio | Dark | Issue |
+|-----------|-----------|-------------|:---:|------------|:---:|-------|
+| Input | text / surface | 17.5:1 | ✅ | 14.2:1 | ✅ | — |
+| Input | placeholder / surface | 4.6:1 | ✅ | 3.1:1 | ❌ | P0: Dark placeholder fails 4.5:1 |
+| Badge | text / badge-bg | 5.2:1 | ✅ | 2.8:1 | ❌ | P0: Dark badge insufficient contrast |
+
+### Failing Pairs
+| Component | Theme | Pair | Ratio | Required | Fix |
+|-----------|-------|------|-------|----------|-----|
+| Input | Dark | --muted-foreground / --surface-background | 3.1:1 | 4.5:1 | Darken --muted-foreground in dark mode |
+```
 
 ---
 
@@ -281,4 +414,10 @@ For P0 and P1 issues where the fix is clear and mechanical:
 
 # Audit a section
 /ds-wcag "Forms"
+
+# Run only the dual-theme contrast audit (fast)
+/ds-wcag --themes-only
+
+# Audit a component and run the auto-fix loop
+/ds-wcag Button --fix
 ```

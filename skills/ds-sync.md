@@ -48,7 +48,77 @@ If the registry does not exist, fall back to the individual file reads described
 
 2. **Read `design-system-manifest.json`** for argTypes, prop definitions, and variant metadata not in the mapping file.
 
-**If the mapping file is stale or missing components**, regenerate it by fetching Storybook's `/index.json` and traversing the Figma page children. Save the updated mapping back to `.claude/ds-story-figma-map.json`.
+### 1.1.1 Mapping File Staleness Check
+
+Before syncing, validate the mapping file is current. This prevents silent failures where write-backs target the wrong or deleted Figma nodes.
+
+**Step 1 — Resolve all component node IDs in Figma:**
+
+```js
+// figma_execute
+const page = figma.currentPage;
+const liveIds = new Set();
+function walk(node) {
+  if (node.type === 'COMPONENT' || node.type === 'COMPONENT_SET' || node.type === 'FRAME') {
+    liveIds.add(node.id);
+  }
+  if ('children' in node) node.children.forEach(walk);
+}
+walk(page);
+return [...liveIds];
+```
+
+**Step 2 — Cross-reference against the mapping:**
+
+For each `sections[section].components[name].figmaId` in the mapping file:
+- If the ID is **not** in `liveIds` → flag as **STALE_ID**
+- If the component is in the manifest but has no mapping entry → flag as **MISSING_MAPPING**
+- If the mapping has an entry with no corresponding manifest component → flag as **ORPHAN_ENTRY**
+
+**Step 3 — Fetch Storybook index and cross-reference story IDs:**
+
+```bash
+curl -s http://localhost:6006/index.json
+```
+
+For each `stories[]` entry in the mapping, verify the story ID exists in the Storybook index. Flag **MISSING_STORY** for any that don't.
+
+**Step 4 — Report and decide:**
+
+```markdown
+### Mapping File Health
+| Status | Count | Details |
+|--------|-------|---------|
+| Valid entries | X | — |
+| Stale Figma IDs | X | Button (ID:123), Input (ID:456) |
+| Missing mappings | X | DatePicker, Tooltip |
+| Orphan entries | X | LegacyAlert (removed from manifest) |
+| Missing Storybook stories | X | badge--with-icon |
+```
+
+- If stale/missing/orphan entries are **0** → proceed with sync.
+- If any stale IDs exist → **pause and report.** Do NOT write to stale node IDs. Offer to attempt auto-recovery (re-scan Figma by name and update the IDs) before continuing.
+- If > 25% of entries are invalid → **abort sync** and instruct the user to regenerate the mapping file using the [Mapping File Guide](../guides/mapping-file.md).
+
+**Auto-recovery for stale IDs:** For each stale component, search Figma by name:
+
+```js
+// figma_execute
+const page = figma.currentPage;
+const matches = [];
+function walk(node) {
+  if ((node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') && node.name === 'COMPONENT_NAME') {
+    matches.push({ id: node.id, name: node.name, parent: node.parent?.name });
+  }
+  if ('children' in node) node.children.forEach(walk);
+}
+walk(page);
+return matches;
+```
+
+If exactly one match is found, update the mapping entry and continue. If zero or multiple matches are found, require manual resolution.
+
+**If the mapping file is absent**, regenerate it by fetching Storybook's `/index.json` and traversing the Figma page children. Save the updated mapping back to `.claude/ds-story-figma-map.json`.
 
 ### 1.2 Build the Token Translation Map
 

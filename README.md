@@ -11,11 +11,14 @@ A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/d
 | Skill                                          | Command           | Description                                                                                                                                               |
 | ---------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **[DS Sync](skills/ds-sync.md)**               | `/ds-sync`        | Sync Storybook components to Figma — renders each component, compares it to its Figma counterpart, and writes adjustments back using only bound variables |
-| **[DS WCAG](skills/ds-wcag.md)**               | `/ds-wcag`        | WCAG 2.1 Level AA accessibility audit — source analysis, axe-core, keyboard testing, contrast checks in light + dark                                      |
+| **[DS WCAG](skills/ds-wcag.md)**               | `/ds-wcag`        | WCAG 2.1 Level AA accessibility audit — source analysis, axe-core, keyboard testing, dual-theme contrast checks, and an auto-fix loop                    |
 | **[DS Report](skills/ds-report.md)**           | `/ds-report`      | Cross-reference Code, Storybook, and Figma to produce a parity report with drift scores and historical benchmarks                                         |
 | **[DS Proto](skills/ds-proto.md)**             | `/ds-proto`       | Prototype layouts using your existing design system components with accessibility guardrails                                                              |
 | **[DS Spec](skills/ds-spec.md)**               | `/ds-spec`        | Generate structured component specs — anatomy, API, tokens, structure, and accessibility in a single pass                                                 |
-| **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Lightweight Figma-to-Storybook visual parity spot-check                                                                                                   |
+| **[DS Tokens](skills/ds-tokens.md)**           | `/ds-tokens`      | Validate CSS token parity against Figma variables — detects mismatches, missing tokens, orphaned variables, and generates `.claude/ds-token-map.json`    |
+| **[DS Usage](skills/ds-usage.md)**             | `/ds-usage`       | Scan the codebase for component adoption, shadow copies, override patterns, and unused components — outputs per-team adoption metrics                     |
+| **[DS Lifecycle](skills/ds-lifecycle.md)**     | `/ds-lifecycle`   | Track component lifecycle stages (proposed → alpha → beta → stable → deprecated → removed), enforce promotion criteria, and generate deprecation notices |
+| **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Figma-to-Storybook visual parity audit — per-component and per-variant screenshot diff, property extraction, drift scoring, and mapping health check     |
 | **[Storybook](skills/storybook.md)**           | `/storybook`      | Launch your Storybook dev server                                                                                                                          |
 
 ### Rules (`.claude/rules/`)
@@ -26,12 +29,15 @@ A collection of open-source [Claude Code skills](https://docs.anthropic.com/en/d
 
 ### Guides
 
-| Guide                                            | Description                                                                                      |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| **[Getting Started](guides/getting-started.md)** | End-to-end setup: Figma MCP, Storybook, mapping file, and your first sync                        |
-| **[DS Registry](guides/ds-registry.md)**         | Unified JSON registry — one file for all component, story, Figma, and token metadata             |
-| **[Mapping File](guides/mapping-file.md)**       | How to create and maintain the Storybook-to-Figma mapping JSON                                   |
-| **[Code Connect](guides/code-connect.md)**       | Optional: link production components to Figma Dev Mode and the MCP server via Figma Code Connect |
+| Guide                                                          | Description                                                                                      |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **[Getting Started](guides/getting-started.md)**               | End-to-end setup: Figma MCP, Storybook, mapping file, and your first sync                        |
+| **[DS Registry](guides/ds-registry.md)**                       | Unified JSON registry — one file for all component, story, Figma, and token metadata             |
+| **[Mapping File](guides/mapping-file.md)**                     | How to create and maintain the Storybook-to-Figma mapping JSON                                   |
+| **[Code Connect](guides/code-connect.md)**                     | Optional: link production components to Figma Dev Mode and the MCP server via Figma Code Connect |
+| **[CI Integration](guides/ci-integration.md)**                 | Run DS skills in CI — WCAG gates, drift thresholds, shadow copy detection, and PR comments       |
+| **[Component Versioning](guides/component-versioning.md)**     | Semantic versioning for DS components, codemods, deprecation notices, and migration guides       |
+| **[Multi-Brand](guides/multi-brand.md)**                       | Run skills across multiple brands or themes — per-brand token maps, Figma files, and CI matrix   |
 
 ### Templates
 
@@ -82,14 +88,35 @@ See the **[Getting Started Guide](guides/getting-started.md)** for full setup in
 # Audit accessibility on all components
 /ds-wcag
 
-# Audit a specific component
-/ds-wcag Button
+# Audit a component and auto-fix what can be fixed
+/ds-wcag Button --fix
+
+# Run a dual-theme contrast audit only
+/ds-wcag --themes-only
 
 # Run a full parity report
 /ds-report
 
 # Sync Storybook to Figma
 /ds-sync Button
+
+# Validate CSS ↔ Figma token parity and generate token map
+/ds-tokens --generate
+
+# Scan the codebase for adoption, shadow copies, and overrides
+/ds-usage --teams
+
+# Check component lifecycle status and flag overdue promotions
+/ds-lifecycle audit
+
+# Promote a component when it meets all stable criteria
+/ds-lifecycle promote DatePicker
+
+# Deprecate a component and generate migration notices
+/ds-lifecycle deprecate LegacyAlert
+
+# Full Figma-to-Storybook visual parity audit with per-variant diffs
+/ds-audit-figma --variants --themes
 
 # Prototype a new feature
 /ds-proto "dashboard with metric cards and filters"
