@@ -103,6 +103,79 @@ Commit both of these to version control. They're stable design decisions, not ge
 
 ---
 
+## google-labs-code Spec Format
+
+The [google-labs-code/design.md](https://github.com/google-labs-code/design.md) project defines a formal spec for the format: YAML front matter with machine-readable tokens, plus a markdown body in a canonical section order. The CLI provides `lint`, `diff`, and `export` commands for validating and converting the file.
+
+Pass `--spec` to `/ds-design-md` to generate a spec-compliant file.
+
+### What changes with `--spec`
+
+**YAML front matter** is prepended, containing resolved token values:
+
+```yaml
+---
+colors:
+  primary: "#1a6cf7"
+  background: "#f9fafb"
+  foreground: "#1a1a1a"
+  muted: "#6b7280"
+  border: "#e5e7eb"
+typography:
+  fontFamily: "Inter, system-ui, sans-serif"
+  monoFamily: "JetBrains Mono, monospace"
+  scale:
+    sm: { size: "14px", weight: 400, lineHeight: 1.5 }
+    base: { size: "16px", weight: 400, lineHeight: 1.5 }
+spacing:
+  base: "4px"
+  scale: [4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]
+rounding:
+  sm: "4px"
+  md: "6px"
+  lg: "8px"
+  full: "9999px"
+components:
+  button:
+    background: "{colors.primary}"
+---
+```
+
+**Section names** follow the spec's canonical order:
+
+| Spec section | Standard section |
+|---|---|
+| Overview | Visual Theme |
+| Colors | Color Palette |
+| Typography | Typography |
+| Layout | Spacing |
+| Elevation & Depth | Elevation |
+| Shapes | *(border radius, split out from Spacing)* |
+| Components | Components |
+| Do's and Don'ts | Design Guidelines |
+
+The Agent Prompt Guide section is omitted in spec output — it's Claude Code-specific.
+
+### CLI tools
+
+With the `design.md` CLI installed (`npm install --save-dev design.md`):
+
+```bash
+# Validate the file — broken references, contrast, missing tokens, section order
+npx design.md lint DESIGN.md
+
+# Compare two versions — detects token-level regressions
+npx design.md diff DESIGN.md DESIGN.md.prev
+
+# Export tokens to Tailwind config or W3C DTCG format
+npx design.md export --format tailwind DESIGN.md > tailwind-tokens.js
+npx design.md export --format w3c DESIGN.md > tokens.json
+```
+
+`/ds-design-md --spec` runs the linter automatically after writing the file and reports any violations.
+
+---
+
 ## Relationship to Other Skills
 
 `/ds-proto` loads DESIGN.md in Phase 1.6 and uses the visual theme and guidelines to:

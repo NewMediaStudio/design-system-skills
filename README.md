@@ -18,7 +18,7 @@ Open-source [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code)
 | **[DS Tokens](skills/ds-tokens.md)**           | `/ds-tokens`      | Validate CSS token parity against Figma variables — detects mismatches, missing tokens, orphaned variables, and generates `.claude/ds-token-map.json`    |
 | **[DS Usage](skills/ds-usage.md)**             | `/ds-usage`       | Scan the codebase for component adoption, shadow copies, override patterns, and unused components — outputs per-team adoption metrics                     |
 | **[DS Lifecycle](skills/ds-lifecycle.md)**     | `/ds-lifecycle`   | Track component lifecycle stages (proposed → alpha → beta → stable → deprecated → removed), enforce promotion criteria, and generate deprecation notices |
-| **[DS Design MD](skills/ds-design-md.md)**     | `/ds-design-md`   | Generate a `DESIGN.md` from your token map, Figma variables, typography, and component patterns — readable by any AI agent (Cursor, Lovable, Google Stitch) |
+| **[DS Design MD](skills/ds-design-md.md)**     | `/ds-design-md`   | Generate a `DESIGN.md` from your token map, Figma variables, typography, and component patterns — readable by any AI agent and compliant with the [google-labs-code/design.md](https://github.com/google-labs-code/design.md) spec (`--spec` flag) |
 | **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Figma-to-Storybook visual parity audit — per-component and per-variant screenshot diff, property extraction, drift scoring, and mapping health check     |
 | **[Storybook](skills/storybook.md)**           | `/storybook`      | Launch your Storybook dev server                                                                                                                          |
 
@@ -119,6 +119,9 @@ See the **[Getting Started Guide](guides/getting-started.md)** for full setup. T
 
 # Generate a DESIGN.md for use in Cursor, Lovable, Google Stitch
 /ds-design-md --root
+
+# Generate google-labs-code/design.md spec-compliant file (YAML front matter + canonical sections + lint)
+/ds-design-md --spec --root
 
 # Generate with Figma typography styles and variable values
 /ds-design-md --figma --root
@@ -225,6 +228,7 @@ Default is `localhost:6006`. If your Storybook runs on a different port, update 
 | [Figma Desktop](https://www.figma.com/downloads/)                | Figma skills                              | Download from Figma                              |
 | [Storybook](https://storybook.js.org/)                           | All skills                                | Part of your project                             |
 | [Figma Code Connect](https://github.com/figma/code-connect)      | Optional: richer MCP context              | `npm install --save-dev @figma/code-connect`     |
+| [design.md CLI](https://github.com/google-labs-code/design.md)   | Optional: lint, diff, export for `--spec` | `npm install --save-dev design.md`               |
 
 ---
 

@@ -19,6 +19,7 @@ Generate a `DESIGN.md` file from your existing design system data — tokens, Fi
   - `--figma` — pull typography styles and variable values directly from Figma (richer output)
   - `--update` — update an existing DESIGN.md, preserving manually written sections
   - `--root` — write to project root `DESIGN.md` instead of `.claude/DESIGN.md` (default)
+  - `--spec` — output a [google-labs-code/design.md](https://github.com/google-labs-code/design.md) compliant file: YAML front matter with machine-readable tokens + markdown body in the canonical section order. Compatible with `design.md lint`, `design.md diff`, and `design.md export`.
   - (empty) — generate `.claude/DESIGN.md` from code sources only
 
 ---
@@ -344,6 +345,73 @@ When generating a component:
 
 ---
 
+## Phase 7.5: Spec Format (`--spec`)
+
+When `--spec` is set, prepend a YAML front matter block to the output using all extracted token data, and follow the canonical section order from the [google-labs-code/design.md](https://github.com/google-labs-code/design.md) spec.
+
+### YAML Front Matter
+
+Build the block from extracted tokens. Use `{path.to.token}` references for component values that alias existing color tokens:
+
+```yaml
+---
+colors:
+  primary: "<resolved hex — light mode>"
+  background: "<resolved hex — light mode>"
+  foreground: "<resolved hex — light mode>"
+  muted: "<resolved hex — light mode>"
+  border: "<resolved hex — light mode>"
+  destructive: "<resolved hex — light mode>"
+  success: "<resolved hex — light mode>"
+typography:
+  fontFamily: "<primary font stack>"
+  monoFamily: "<mono font stack>"
+  scale:
+    xs: { size: "12px", weight: 400, lineHeight: 1.5 }
+    sm: { size: "14px", weight: 400, lineHeight: 1.5 }
+    base: { size: "16px", weight: 400, lineHeight: 1.5 }
+    lg: { size: "18px", weight: 500, lineHeight: 1.4 }
+    xl: { size: "20px", weight: 600, lineHeight: 1.3 }
+    2xl: { size: "24px", weight: 700, lineHeight: 1.2 }
+spacing:
+  base: "<base unit in px>"
+  scale: [4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96]
+rounding:
+  sm: "<value>"
+  md: "<value>"
+  lg: "<value>"
+  full: "9999px"
+components:
+  button:
+    background: "{colors.primary}"
+    foreground: "#ffffff"
+  card:
+    background: "{colors.background}"
+    border: "{colors.border}"
+---
+```
+
+Include one entry per component family in the registry. Use `{colors.*}` references where a component token directly aliases a semantic color — the spec linter enforces these resolve.
+
+### Canonical Section Order
+
+Replace the standard section names with the spec's canonical order:
+
+| Spec section | Maps from |
+|---|---|
+| `## Overview` | Visual Theme |
+| `## Colors` | Color Palette |
+| `## Typography` | Typography |
+| `## Layout` | Spacing (scale, patterns, breakpoints) |
+| `## Elevation & Depth` | Elevation |
+| `## Shapes` | Border radius values (extracted from Spacing) |
+| `## Components` | Components |
+| `## Do's and Don'ts` | Design Guidelines |
+
+Omit the **Agent Prompt Guide** section in spec output — it is Claude Code-specific and outside the google-labs-code format.
+
+---
+
 ## Phase 8: Write Output
 
 **Default (`--root` not set):** Write to `.claude/DESIGN.md`. This path is automatically loaded by `/ds-proto` and `/ds-spec`.
@@ -351,6 +419,35 @@ When generating a component:
 **With `--root`:** Write to `DESIGN.md` in the project root. This is the path most external AI tools (Cursor, Lovable, Google Stitch) look for by default.
 
 **With `--update`:** Merge with the existing file. Preserve any manually written sections (Visual Theme, Guidelines). Replace auto-generated sections (Color Palette, Typography, Spacing, Components) with fresh data.
+
+---
+
+## Phase 9: Lint (`--spec`)
+
+After writing the file, run the `design.md` linter if the CLI is available:
+
+```bash
+# Check for the CLI
+npx design.md --version 2>/dev/null
+
+# Lint the output file
+npx design.md lint <output-path>
+```
+
+The linter checks for:
+- Broken token references (e.g., `{colors.undefined}` with no matching key)
+- Missing `colors.primary`
+- WCAG contrast violations on foreground/background color pairs
+- Orphaned tokens (defined in front matter but never referenced in the body)
+- Section ordering violations against the canonical order
+
+Report violations to the user. For contrast failures, suggest adjusted hex values that pass 4.5:1. For structural issues, correct and re-lint before finalising the file.
+
+If the CLI is not installed:
+
+```bash
+npm install --save-dev design.md
+```
 
 ---
 
@@ -379,4 +476,10 @@ When generating a component:
 
 # Full generation with Figma data, written to project root
 /ds-design-md --figma --root
+
+# Generate google-labs-code/design.md spec-compliant file (YAML front matter + canonical sections)
+/ds-design-md --spec --root
+
+# Spec-compliant with Figma data and lint validation
+/ds-design-md --spec --figma --root
 ```
