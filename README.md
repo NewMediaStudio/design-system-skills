@@ -20,6 +20,9 @@ Open-source [Claude Code skills](https://docs.anthropic.com/en/docs/claude-code)
 | **[DS Lifecycle](skills/ds-lifecycle.md)**     | `/ds-lifecycle`   | Track component lifecycle stages (proposed → alpha → beta → stable → deprecated → removed), enforce promotion criteria, and generate deprecation notices |
 | **[DS Design MD](skills/ds-design-md.md)**     | `/ds-design-md`   | Generate a `DESIGN.md` from your token map, Figma variables, typography, and component patterns — readable by any AI agent and compliant with the [google-labs-code/design.md](https://github.com/google-labs-code/design.md) spec (`--spec` flag) |
 | **[DS Audit Figma](skills/ds-audit-figma.md)** | `/ds-audit-figma` | Figma-to-Storybook visual parity audit — per-component and per-variant screenshot diff, property extraction, drift scoring, and mapping health check     |
+| **[DS Diff](skills/ds-diff.md)**               | `/ds-diff`        | Compare `DESIGN.md` token values across git refs — surfaces color shifts, contrast regressions, and removed tokens before they ship                      |
+| **[DS Export](skills/ds-export.md)**           | `/ds-export`      | Convert `DESIGN.md` front matter tokens to Tailwind config, W3C DTCG JSON, Style Dictionary, or CSS custom properties                                   |
+| **[DS Brand](skills/ds-brand.md)**             | `/ds-brand`       | Fork a `DESIGN.md` into a brand variant by overriding tokens, then validate WCAG contrast on the result                                                  |
 | **[Storybook](skills/storybook.md)**           | `/storybook`      | Launch your Storybook dev server                                                                                                                          |
 
 ### Rules (`.claude/rules/`)
@@ -128,6 +131,15 @@ See the **[Getting Started Guide](guides/getting-started.md)** for full setup. T
 
 # Full Figma-to-Storybook visual parity audit with per-variant diffs
 /ds-audit-figma --variants --themes
+
+# Diff DESIGN.md token values against main (post result to open PR)
+/ds-diff main --pr
+
+# Export tokens to Tailwind config and W3C DTCG JSON
+/ds-export tailwind w3c
+
+# Fork DESIGN.md into a brand variant and validate contrast
+/ds-brand partner --colors '{"primary":"#e11d48","background":"#0f172a"}'
 
 # Prototype a new feature
 /ds-proto "dashboard with metric cards and filters"
